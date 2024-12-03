@@ -57,8 +57,12 @@ def main():
                 f"\n{'-' * 120}"
                 "\nUse the 'pwd' command to check your current absolute path."
             )
+        path_obj = Path(path_arg)
 
-        if not is_valid_absolute_path(path_arg):
+        if not path_obj.is_absolute():
+            path_obj = Path.cwd() / path_obj
+
+        if not is_valid_absolute_path(path_obj):
             raise Exception(
                 "your absolute path must be correct and exist on your pc"
                 f"\n{'-' * 120}"
