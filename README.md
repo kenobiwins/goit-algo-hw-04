@@ -1,3 +1,2 @@
-# goit-algo-hw-04
-
-![alt text](./images/Screenshot%202024-12-02%20at%2018.15.58.png)
+## colorama_cli 
+python3 main.py --path=./ --indent=+
