@@ -40,7 +40,7 @@ COMMAND_DESCRIPTIONS: Dict[Command, str] = {
 
 def add_contact(args: list[str], contacts: Dict[str, str]) -> str:
     if len(args) < 2:
-        print(f"{Color.ERROR.value}Error: Please provide both name and phone number.")
+        return f"{Color.ERROR.value}Error: Please provide both name and phone number."
     else:
         name, phone = args
         contacts[name] = phone
@@ -49,7 +49,7 @@ def add_contact(args: list[str], contacts: Dict[str, str]) -> str:
 
 def change_contact(args: list[str], contacts: Dict[str, str]) -> str:
     if len(args) < 2:
-        print(f"{Color.ERROR.value}Error: Please provide both name and phone number.")
+        return f"{Color.ERROR.value}Error: Please provide both name and phone number."
     else:
         name, phone = args
         contacts[name] = phone
@@ -57,7 +57,10 @@ def change_contact(args: list[str], contacts: Dict[str, str]) -> str:
 
 
 def show_phone(args: list[str], contacts: Dict[str, str]) -> str:
-    name, _ = args
+    if len(args) < 1:
+        return f"{Color.ERROR.value}Error: Please provide a name."
+
+    name, = args
     phone = contacts.get(name)
     if phone:
         return f"{Color.INFO.value}{name}: {phone}"
@@ -102,7 +105,7 @@ def main() -> None:
                 parsed_command = Command(command)
             except ValueError:
                 print(
-                    f"{Color.ERROR.value}Invalid command. Type 'help' to see available commands for the CLI."
+                    f"{Color.ERROR.value}Error: Invalid command. Type 'help' to see available commands for the CLI."
                 )
                 continue
 
@@ -123,7 +126,7 @@ def main() -> None:
                 case Command.HELP:
                     print(show_help())
                 case _:
-                    print(f"{Color.ERROR.value}Invalid command.")
+                    print(f"{Color.ERROR.value}Error: Invalid command.")
     except Exception as e:
         print(f"{Color.ERROR.value}Exeption: {e}")
 
