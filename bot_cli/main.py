@@ -1,5 +1,6 @@
 from colorama import Fore, init
 from enum import Enum
+from typing import Dict, Tuple
 
 init(autoreset=True)
 
@@ -25,7 +26,7 @@ class Color(Enum):
     DEFAULT = Fore.WHITE
 
 
-COMMAND_DESCRIPTIONS = {
+COMMAND_DESCRIPTIONS: Dict[Command, str] = {
     Command.ADD: "Add a new contact. Usage: add <name> <phone>",
     Command.CHANGE: "Change an existing contact's phone number. Usage: change <name> <phone>",
     Command.PHONE: "Show the phone number of a contact. Usage: phone <name>",
@@ -37,7 +38,7 @@ COMMAND_DESCRIPTIONS = {
 }
 
 
-def add_contact(args, contacts):
+def add_contact(args: list[str], contacts: Dict[str, str]) -> str:
     if len(args) < 2:
         print(f"{Color.ERROR.value}Error: Please provide both name and phone number.")
     else:
@@ -46,7 +47,7 @@ def add_contact(args, contacts):
         return f"{Color.SUCCESS.value}Contact added."
 
 
-def change_contact(args, contacts):
+def change_contact(args: list[str], contacts: Dict[str, str]) -> str:
     if len(args) < 2:
         print(f"{Color.ERROR.value}Error: Please provide both name and phone number.")
     else:
@@ -55,7 +56,7 @@ def change_contact(args, contacts):
         return f"{Color.SUCCESS.value}Contact changed."
 
 
-def show_phone(args, contacts):
+def show_phone(args: list[str], contacts: Dict[str, str]) -> str:
     name, _ = args
     phone = contacts.get(name)
     if phone:
@@ -63,13 +64,13 @@ def show_phone(args, contacts):
     return f"{Color.ERROR.value}Contact not found."
 
 
-def parse_input(user_input):
+def parse_input(user_input: str) -> Tuple[str, list[str]]:
     cmd, *args = user_input.split()
     cmd = cmd.strip().lower()
     return cmd, *args
 
 
-def show_all(contacts):
+def show_all(contacts: Dict[str, str]) -> str:
     if not contacts:
         return f"{Color.WARNING.value}No contacts available."
 
@@ -79,14 +80,14 @@ def show_all(contacts):
     return "\n".join(result)
 
 
-def show_help():
+def show_help() -> str:
     result = [f"{Color.HIGHLIGHT.value}Available Commands:"]
     for command, description in COMMAND_DESCRIPTIONS.items():
         result.append(f"{Color.DEFAULT.value}{command.value}: {description}")
     return "\n".join(result)
 
 
-def main():
+def main() -> None:
     print(f"{Color.TITLE.value}Welcome to the assistant bot!")
     contacts = {}
 
